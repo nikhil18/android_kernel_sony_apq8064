@@ -443,9 +443,13 @@ static void scsi_run_queue(struct request_queue *q)
 		}
 
 		spin_unlock(shost->host_lock);
+		/* hold a reference on the device so it doesn't release device */
+		get_device(&sdev->sdev_gendev);
 		spin_lock(sdev->request_queue->queue_lock);
 		__blk_run_queue(sdev->request_queue);
 		spin_unlock(sdev->request_queue->queue_lock);
+		/* ok to remove device now */
+		put_device(&sdev->sdev_gendev);
 		spin_lock(shost->host_lock);
 	}
 	/* put any unprocessed entries back */
