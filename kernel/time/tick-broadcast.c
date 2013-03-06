@@ -483,14 +483,46 @@ struct cpumask *tick_get_broadcast_oneshot_mask(void)
 	return tick_broadcast_oneshot_mask;
 }
 
-static int tick_broadcast_set_event(ktime_t expires, int force)
+/*
+ * Called before going idle with interrupts disabled. Checks whether a
+ * broadcast event from the other core is about to happen. We detected
+ * that in tick_broadcast_oneshot_control(). The callsite can use this
+ * to avoid a deep idle transition as we are about to get the
+ * broadcast IPI right away.
+ */
+int tick_check_broadcast_expired(void)
 {
-	struct clock_event_device *bc = tick_broadcast_device.evtdev;
+	return cpumask_test_cpu(smp_processor_id(), tick_broadcast_force_mask);
+}
+
+/*
+ * Set broadcast interrupt affinity
+ */
+static void tick_broadcast_set_affinity(struct clock_event_device *bc,
+					const struct cpumask *cpumask)
+{
+	if (!(bc->features & CLOCK_EVT_FEAT_DYNIRQ))
+		return;
+
+	if (cpumask_equal(bc->cpumask, cpumask))
+		return;
+
+	bc->cpumask = cpumask;
+	irq_set_affinity(bc->irq, bc->cpumask);
+}
+
+static int tick_broadcast_set_event(struct clock_event_device *bc, int cpu,
+				    ktime_t expires, int force)
+{
+	int ret;
 
 	if (bc->mode != CLOCK_EVT_MODE_ONESHOT)
 		clockevents_set_mode(bc, CLOCK_EVT_MODE_ONESHOT);
 
-	return clockevents_program_event(bc, expires, force);
+	ret = clockevents_program_event(bc, expires, force);
+	if (!ret)
+		tick_broadcast_set_affinity(bc, cpumask_of(cpu));
+	return ret;
 }
 
 int tick_resume_broadcast_oneshot(struct clock_event_device *bc)
