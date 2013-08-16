@@ -257,7 +257,7 @@ int msm_cpufreq_set_freq_limits(uint32_t cpu, uint32_t min, uint32_t max)
 }
 EXPORT_SYMBOL(msm_cpufreq_set_freq_limits);
 
-static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
+static int msm_cpufreq_init(struct cpufreq_policy *policy)
 {
 	int cur_freq;
 	int index;
@@ -319,7 +319,7 @@ static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
 	return 0;
 }
 
-static int __cpuinit msm_cpufreq_cpu_callback(struct notifier_block *nfb,
+static int msm_cpufreq_cpu_callback(struct notifier_block *nfb,
 		unsigned long action, void *hcpu)
 {
 	unsigned int cpu = (unsigned long)hcpu;
@@ -347,6 +347,34 @@ static int __cpuinit msm_cpufreq_cpu_callback(struct notifier_block *nfb,
 static struct notifier_block __refdata msm_cpufreq_cpu_notifier = {
 	.notifier_call = msm_cpufreq_cpu_callback,
 };
+
+#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND
+	extern bool lmf_screen_state;
+#endif
+
+static void msm_cpu_early_suspend(struct early_suspend *h)
+{
+
+#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND
+	lmf_screen_state = false;
+#endif
+
+}
+
+static void msm_cpu_late_resume(struct early_suspend *h)
+{
+
+#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND
+	lmf_screen_state = true;
+#endif
+
+}
+
+static struct early_suspend msm_cpu_early_suspend_handler = {
+  .level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN,
+  .suspend = msm_cpu_early_suspend,
+  .resume = msm_cpu_late_resume,
+}; 
 
 /*
  * Define suspend/resume for cpufreq_driver. Kernel will call

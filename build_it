@@ -1,0 +1,20 @@
+CUR_TC=/home/nik/android/test/AK-linaro/4.8.2-2013.09.20130923/bin/
+
+
+### compile kernel
+ARCH=arm CROSS_COMPILE=${CUR_TC}arm-linux-gnueabihf- make mod_fusion3_defconfig
+ARCH=arm CROSS_COMPILE=${CUR_TC}arm-linux-gnueabihf- make xconfig
+cp ./.config arch/arm/configs/mod_fusion3_defconfig
+ARCH=arm CROSS_COMPILE=${CUR_TC}arm-linux-gnueabihf- make CONFIG_DEBUG_SECTION_MISMATCH=y -j8
+
+echo "checking for compiled kernel..."
+if [ -f arch/arm/boot/zImage ]
+then
+
+### copy zImage
+cp arch/arm/boot/zImage ../cmbuild/.
+
+cd ../cmbuild/
+
+/home/nik/android/cmbuild/makeit.sh
+fi
