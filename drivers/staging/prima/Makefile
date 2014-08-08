@@ -554,6 +554,13 @@ endif
 # enable the MAC Address auto-generation feature
 CDEFINES += -DWLAN_AUTOGEN_MACADDR_FEATURE
 
+<<<<<<< HEAD
+=======
+ifeq ($(CONFIG_WLAN_FEATURE_11W),y)
+CDEFINES += -DWLAN_FEATURE_11W
+endif
+
+>>>>>>> 6f5e4ae... Fix numerous warnings/errors caused by stricter 4.8+ toolchains
 ifeq ($(PANIC_ON_BUG),1)
 CDEFINES += -DPANIC_ON_BUG
 endif
