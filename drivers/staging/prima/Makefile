@@ -554,26 +554,6 @@ endif
 # enable the MAC Address auto-generation feature
 CDEFINES += -DWLAN_AUTOGEN_MACADDR_FEATURE
 
-ifeq ($(CONFIG_ARCH_MSM8960),y)
-EXTRA_CFLAGS += -march=armv7-a
-CDEFINES += -DMSM_PLATFORM_8960
-endif
-
-ifeq ($(CONFIG_ARCH_MSM8X60),y)
-EXTRA_CFLAGS += -march=armv7-a
-CDEFINES += -DMSM_PLATFORM_8660
-endif
-
-ifeq ($(CONFIG_MACH_MSM7X30_SURF),y)
-EXTRA_CFLAGS += -march=armv7-a
-CDEFINES += -DMSM_PLATFORM_7x30
-endif
-
-ifeq ($(CONFIG_MACH_MSM7X27_SURF),y)
-EXTRA_CFLAGS += -march=armv6
-CDEFINES += -DMSM_PLATFORM_7x27
-endif
-
 ifeq ($(PANIC_ON_BUG),1)
 CDEFINES += -DPANIC_ON_BUG
 endif
