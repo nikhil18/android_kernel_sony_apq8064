@@ -26,6 +26,10 @@
 #include "mipi_dsi.h"
 #include "mipi_dsi_panel_driver.h"
 
+#ifdef CONFIG_POWERSUSPEND
+#include <linux/powersuspend.h>
+#endif
+
 #ifdef CONFIG_FB_MSM_MDP303
 #define DSI_VIDEO_BASE	0xF0000 /* Taken from mdp_dma_dsi_video.c */
 #else
@@ -457,6 +461,10 @@ static int panel_on(struct platform_device *pdev)
 		goto exit;
 	}
 
+#ifdef CONFIG_POWERSUSPEND
+	set_power_suspend_state_panel_hook(POWER_SUSPEND_INACTIVE);
+#endif
+
 	dev = &mfd->panel_pdev->dev;
 	dev_dbg(dev, "%s\n", __func__);
 
@@ -574,6 +582,10 @@ static int panel_off(struct platform_device *pdev)
 		MDP_OUTP(MDP_BASE + DSI_VIDEO_BASE, 0);
 		msleep(20);
 	}
+
+#ifdef CONFIG_POWERSUSPEND
+	set_power_suspend_state_panel_hook(POWER_SUSPEND_ACTIVE);
+#endif
 
 	dev_dbg(dev, "%s: Execute display off\n", __func__);
 	/* Set to OFF even if commands fail below */
