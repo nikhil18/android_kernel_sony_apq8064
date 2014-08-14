@@ -23,20 +23,33 @@ struct msm_thermal_data {
 	int32_t core_limit_temp_degC;
 	int32_t core_temp_hysteresis_degC;
 	uint32_t core_control_mask;
+#ifdef CONFIG_INTELLI_THERMAL
+	uint32_t freq_control_mask;
+#endif
 };
 
-#ifdef CONFIG_THERMAL_MONITOR
+#ifdef CONFIG_INTELLI_THERMAL
+#define DEFAULT_POLLING_MS	500
+#else
+#define DEFAULT_POLLING_MS	1000
+#endif
+
+#if defined(CONFIG_THERMAL_MONITOR) || defined(CONFIG_INTELLI_THERMAL)
 extern int msm_thermal_init(struct msm_thermal_data *pdata);
+#ifdef CONFIG_THERMAL_MONITOR
 extern int msm_thermal_device_init(void);
+#endif
 #else
 static inline int msm_thermal_init(struct msm_thermal_data *pdata)
 {
 	return -ENOSYS;
 }
+#ifdef CONFIG_THERMAL_MONITOR
 static inline int msm_thermal_device_init(void)
 {
 	return -ENOSYS;
 }
+#endif
 #endif
 
 #endif /*__MSM_THERMAL_H*/
