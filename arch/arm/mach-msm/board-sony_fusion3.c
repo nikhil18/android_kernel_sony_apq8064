@@ -132,6 +132,15 @@
 #include <linux/bu52031nvx.h>
 #endif
 
+#ifdef CONFIG_CPU_FREQ_GOV_UBERDEMAND
+int set_second_phase_freq(int cpufreq);
+#endif
+
+#ifdef CONFIG_CPU_FREQ_GOV_BADASS
+int set_two_phase_freq_badass(int cpufreq);
+int set_three_phase_freq_badass(int cpufreq);
+#endif
+
 #include "msm_watchdog.h"
 #include "board-8064.h"
 #include "clock.h"
@@ -4587,6 +4596,15 @@ static void __init apq8064_common_init(void)
 	apq8064_init_dsps();
 	platform_device_register(&msm_8960_riva);
 	BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
+
+	#ifdef CONFIG_CPU_FREQ_GOV_UBERDEMAND
+	set_second_phase_freq(1134000);
+	#endif
+
+	#ifdef CONFIG_CPU_FREQ_GOV_BADASS
+	set_two_phase_freq_badass(918000);
+	set_three_phase_freq_badass(1134000);
+	#endif
 
 	switch (sony_hw()) {
 	case HW_YUGA_MAKI:
