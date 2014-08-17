@@ -26,11 +26,11 @@
 #define TRANSITION_LATENCY_LIMIT	(10 * 1000 * 1000)
 #define SAMPLE_RATE			(40009)
 #define OPTIMAL_POSITION		(3)
-#define TABLE_SIZE			(12)
+#define TABLE_SIZE			(13)
 #define HYSTERESIS			(7)
 #define UP_THRESH			(100)
 
-static const int valid_fqs[TABLE_SIZE] = {384000, 486000, 594000, 702000,
+static const int valid_fqs[TABLE_SIZE] = {192000, 384000, 486000, 594000, 702000,
 			810000, 918000, 1026000, 1134000, 1242000, 1350000,
 			1458000, 1512000};
 static void do_dbs_timer(struct work_struct *work);
@@ -39,7 +39,7 @@ static int thresh_adj = 0;
 static int opt_pos = OPTIMAL_POSITION;
 extern bool go_opt;
 static unsigned int dbs_enable, down_requests, prev_table_position, freq_table_position, min_sampling_rate;
-bool early_suspended = false;
+bool power_suspended = false;
 
 static bool io_is_busy = true;
 
@@ -254,7 +254,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	unsigned int max_load, freq_target, j;
 	struct cpufreq_policy *policy = this_dbs_info->cur_policy;
 
-	if (early_suspended) {
+	if (power_suspended) {
 		opt_pos = 1;
 	} else {
 		opt_pos = OPTIMAL_POSITION;
@@ -285,10 +285,10 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 		for (j = 0; j < TABLE_SIZE; j++) {
 			if (valid_fqs[target_table_position] < freq_target) target_table_position++;
 		}
-		freq_table_position = (freq_table_position + target_table_position + !early_suspended) / 2;
+		freq_table_position = (freq_table_position + target_table_position + !power_suspended) / 2;
 	}
 
-	if (!early_suspended) {
+	if (!power_suspended) {
 		// apply hysteresis before dropping to lower bus speeds
 		if (freq_table_position < opt_pos) {
 			freq_table_position = opt_pos;
