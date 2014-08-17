@@ -331,7 +331,7 @@ static int cpufreq_governor_interactivex(struct cpufreq_policy *new_policy,
 		break;
 
 	case CPUFREQ_GOV_STOP:
-		if (atomic_dec_return(&active_count) > 1)
+		if (atomic_dec_return(&active_count) > 0)
 			return 0;
 
 		sysfs_remove_group(cpufreq_global_kobject,
