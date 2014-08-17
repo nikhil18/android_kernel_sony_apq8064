@@ -407,10 +407,13 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		dbs_enable--;
 		mutex_destroy(&this_dbs_info->timer_mutex);
 
-		if (dbs_enable == 0)
+		if (dbs_enable == 0) {
 			cpufreq_unregister_notifier(
 					&dbs_cpufreq_notifier_block,
 					CPUFREQ_TRANSITION_NOTIFIER);
+			sysfs_remove_group(cpufreq_global_kobject,
+					&dbs_attr_group);
+		}
 
 		mutex_unlock(&dbs_mutex);
 
