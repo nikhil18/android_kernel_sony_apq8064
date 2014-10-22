@@ -381,7 +381,8 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -funswitch-loops -fpredictive-commoning -fgcse-after-reload \
 		   -Wno-sizeof-pointer-memaccess \
                    -fmodulo-sched -fmodulo-sched-allow-regmoves \
-		   -mfpu=neon-vfpv4 -mtune=cortex-a15  -mcpu=cortex-a15
+		   -mfpu=neon-vfpv4 -mtune=cortex-a15  -mcpu=cortex-a15 \
+		   -Wno-array-bounds -Wno-uninitialized
 ifneq (,$(findstring sabermod,$(CROSS_COMPILE)))
   KBUILD_CFLAGS   += -fgraphite -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 endif
