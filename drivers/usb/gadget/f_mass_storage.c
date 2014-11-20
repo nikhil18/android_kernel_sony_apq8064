@@ -3151,10 +3151,7 @@ static struct fsg_common *fsg_common_init(struct fsg_common *common,
 		rc = device_create_file(&curlun->dev, &dev_attr_cdrom);
 		if (rc)
 			goto error_luns;
-<<<<<<< HEAD
 
-=======
->>>>>>> dead802... True cd-rom emulation mode
 #ifdef CONFIG_USB_MSC_PROFILING
 		rc = device_create_file(&curlun->dev, &dev_attr_perf);
 		if (rc)
@@ -3325,7 +3322,6 @@ static void fsg_common_release(struct kref *ref)
 			device_remove_file(&lun->dev, &dev_attr_nofua);
 			device_remove_file(&lun->dev, &dev_attr_ro);
 			device_remove_file(&lun->dev, &dev_attr_file);
-			device_remove_file(&lun->dev, &dev_attr_cdrom);
 			fsg_lun_close(lun);
 			kfree(lun->lun_filename);
 			lun->lun_filename = NULL;

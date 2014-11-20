@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 4
 SUBLEVEL = 104
-EXTRAVERSION = lightning-kernel-version-1
+EXTRAVERSION = lightning-kernel-version-6
 NAME = Saber-toothed Squirrel
 
 # *DOCUMENTATION*

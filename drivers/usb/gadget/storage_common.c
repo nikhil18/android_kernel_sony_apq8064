@@ -798,7 +798,7 @@ static void store_cdrom_address(u8 *dest, int msf, u32 addr)
 {
 	if (msf) {
 		/* Convert to Minutes-Seconds-Frames */
-		addr >>= 2;             /* Convert to 2048-byte frames */
+		addr >>= 2;		/* Convert to 2048-byte frames */
 		addr += 2*75;		/* Lead-in occupies 2 seconds */
 		dest[3] = addr % 75;	/* Frames */
 		addr /= 75;
@@ -1095,23 +1095,6 @@ static ssize_t fsg_store_file(struct device *dev, struct device_attribute *attr,
 	return (rc < 0 ? rc : count);
 }
 
-<<<<<<< HEAD
-static ssize_t fsg_show_cdrom (struct device *dev, struct device_attribute *attr,
-			   char *buf)
-{
-	struct fsg_lun	*curlun = fsg_lun_from_dev(dev);
-
-	return sprintf(buf, "%d\n", curlun->cdrom);
-}
-
-static ssize_t fsg_store_cdrom(struct device *dev, struct device_attribute *attr,
-			    const char *buf, size_t count)
-{
-	ssize_t		rc;
-	struct fsg_lun	*curlun = fsg_lun_from_dev(dev);
-	struct rw_semaphore	*filesem = dev_get_drvdata(dev);
-	unsigned	cdrom;
-=======
 static ssize_t fsg_store_cdrom(struct device *dev, struct device_attribute *attr,
 				  const char *buf, size_t count)
 {
@@ -1119,7 +1102,6 @@ static ssize_t fsg_store_cdrom(struct device *dev, struct device_attribute *attr
 	struct fsg_lun  *curlun = fsg_lun_from_dev(dev);
 	struct rw_semaphore  *filesem = dev_get_drvdata(dev);
 	unsigned  cdrom;
->>>>>>> dead802... True cd-rom emulation mode
 
 	rc = kstrtouint(buf, 2, &cdrom);
 	if (rc)
@@ -1132,18 +1114,10 @@ static ssize_t fsg_store_cdrom(struct device *dev, struct device_attribute *attr
 	down_read(filesem);
 	if (fsg_lun_is_open(curlun)) {
 		LDBG(curlun, "cdrom status change prevented\n");
-<<<<<<< HEAD
-		LINFO(curlun, "cdrom status change prevented\n");
-=======
->>>>>>> dead802... True cd-rom emulation mode
 		rc = -EBUSY;
 	} else {
 		curlun->cdrom = cdrom;
 		LDBG(curlun, "cdrom status set to %d\n", curlun->cdrom);
-<<<<<<< HEAD
-		LINFO(curlun, "cdrom status set to %d\n", curlun->cdrom);
-=======
->>>>>>> dead802... True cd-rom emulation mode
 		rc = count;
 	}
 	up_read(filesem);
