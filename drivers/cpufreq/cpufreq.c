@@ -684,12 +684,12 @@ static ssize_t store_vdd_levels(struct kobject *a, struct attribute *b, const ch
 
 #endif	/* CONFIG_CPU_VOLTAGE_TABLE */
 
-ssize_t show_gpu_mv_table(struct kobject *a, struct attribute *b, char *buf)
+ssize_t show_gpu_mv_table(struct cpufreq_policy *policy, char *buf)
 {
         return get_gpu_vdd_levels_str(buf);
 }
 
-ssize_t store_gpu_mv_table(struct kobject *a, struct attribute *b, const char *buf, size_t count)
+ssize_t store_gpu_mv_table(struct cpufreq_policy *policy, const char *buf, size_t count)
 {
         unsigned int ret = -EINVAL;
         unsigned int u[3];

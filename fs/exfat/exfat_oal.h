@@ -40,35 +40,45 @@
 #include "exfat_config.h"
 #include <linux/version.h>
 
-/*----------------------------------------------------------------------*/
-/*  Constant & Macro Definitions (Configurable)                         */
-/*----------------------------------------------------------------------*/
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-/*----------------------------------------------------------------------*/
-/*  Constant & Macro Definitions (Non-Configurable)                     */
-/*----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------*/
+	/*  Constant & Macro Definitions (Configurable)                         */
+	/*----------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------*/
-/*  Type Definitions                                                    */
-/*----------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------*/
+	/*  Constant & Macro Definitions (Non-Configurable)                     */
+	/*----------------------------------------------------------------------*/
 
-typedef struct {
-	u16      sec;        /* 0 ~ 59               */
-	u16      min;        /* 0 ~ 59               */
-	u16      hour;       /* 0 ~ 23               */
-	u16      day;        /* 1 ~ 31               */
-	u16      mon;        /* 1 ~ 12               */
-	u16      year;       /* 0 ~ 127 (since 1980) */
-} TIMESTAMP_T;
+	/*----------------------------------------------------------------------*/
+	/*  Type Definitions                                                    */
+	/*----------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------*/
-/*  External Function Declarations                                      */
-/*----------------------------------------------------------------------*/
+	typedef struct {
+		u16      sec;        /* 0 ~ 59               */
+		u16      min;        /* 0 ~ 59               */
+		u16      hour;       /* 0 ~ 23               */
+		u16      day;        /* 1 ~ 31               */
+		u16      mon;        /* 1 ~ 12               */
+		u16      year;       /* 0 ~ 127 (since 1980) */
+	} TIMESTAMP_T;
 
-s32 sm_init(struct semaphore *sm);
-s32 sm_P(struct semaphore *sm);
-void  sm_V(struct semaphore *sm);
+	/*----------------------------------------------------------------------*/
+	/*  External Function Declarations                                      */
+	/*----------------------------------------------------------------------*/
 
-TIMESTAMP_T *tm_current(TIMESTAMP_T *tm);
+	s32 sm_init(struct semaphore *sm);
+	s32 sm_P(struct semaphore *sm);
+	void  sm_V(struct semaphore *sm);
+
+	TIMESTAMP_T *tm_current(TIMESTAMP_T *tm);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus  */
 
 #endif /* _EXFAT_OAL_H */
+
+/* end of exfat_oal.h */

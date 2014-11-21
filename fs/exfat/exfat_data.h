@@ -37,12 +37,25 @@
 
 #include "exfat_config.h"
 
-/*======================================================================*/
-/*                                                                      */
-/*                        FFS CONFIGURATIONS                            */
-/*                  (CHANGE THIS PART IF REQUIRED)                      */
-/*                                                                      */
-/*======================================================================*/
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+  /*======================================================================*/
+  /*                                                                      */
+  /*                        FFS CONFIGURATIONS                            */
+  /*                  (CHANGE THIS PART IF REQUIRED)                      */
+  /*                                                                      */
+  /*======================================================================*/
+
+/* max number of block devices                      */
+#define MAX_DEVICE              2
+
+/* max number of volumes on all block devices       */
+#define MAX_DRIVE               2
+
+/* max number of open files                         */
+#define MAX_OPEN                20
 
 /* max number of root directory entries in FAT12/16 */
 /* (should be an exponential value of 2)            */
@@ -55,4 +68,10 @@
 #define BUF_CACHE_SIZE          256
 #define BUF_CACHE_HASH_SIZE     64
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
 #endif /* _EXFAT_DATA_H */
+
+/* end of exfat_data.h */
