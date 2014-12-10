@@ -1344,8 +1344,6 @@ static void cpufreq_out_of_sync(unsigned int cpu, unsigned int old_freq,
 	cpufreq_notify_transition(&freqs, CPUFREQ_POSTCHANGE);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * cpufreq_quick_get_util - get the CPU utilization from policy->util
  * @cpu: CPU number
@@ -1366,7 +1364,6 @@ unsigned int cpufreq_quick_get_util(unsigned int cpu)
 	return ret_util;
 }
 EXPORT_SYMBOL(cpufreq_quick_get_util);
->>>>>>> 5c38070... allow all hotplug/cpufreqs to get cpu utilization
 
 /**
  * cpufreq_quick_get - get the CPU frequency (in kHz) from policy->cur
