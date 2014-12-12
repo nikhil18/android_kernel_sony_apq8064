@@ -1678,14 +1678,6 @@ config SCHED_SMT
 	  MultiThreading at a cost of slightly increased overhead in some
 	  places. If unsure say N here.
 
-config ASMP
-	bool "Multi-core automatic hotplug support"
-	depends on SMP
-	default n
-	help
-	  Automatically hotplugs the multiple cpu cores on and off
-	  based on cpu load and suspend state
-
 config HAVE_ARM_SCU
 	bool
 	help
@@ -1733,6 +1725,14 @@ config NR_CPUS
 	range 2 32
 	depends on SMP
 	default "4"
+
+config ASMP
+	bool "Multi-core automatic hotplug support"
+	depends on SMP
+	default y
+	help
+	  Automatically hotplugs the multiple cpu cores on and off
+	  based on cpu load and suspend state
 
 config ARM_AUTO_HOTPLUG
         tristate "Auto hotplugging based on scheduler runqueue load for ARM SoCs"
